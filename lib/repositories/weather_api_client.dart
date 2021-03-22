@@ -10,6 +10,7 @@ class WeatherApiClient {
 
   WeatherApiClient({
     @required this.httpClient,
+    http.Client HttpClient,
   }) : assert(httpClient != null);
 
   Future<int> getLocationId(String city) async {
