@@ -1,6 +1,5 @@
 import 'package:meta/meta.dart';
 import 'package:bloc/bloc.dart';
-
 import 'package:weather/blocs/blocs.dart';
 import 'package:weather/models/models.dart';
 import 'package:weather/repositories/repositories.dart';
@@ -15,14 +14,29 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
   @override
   Stream<WeatherState> mapEventToState(WeatherEvent event) async* {
     if (event is WeatherRequested) {
-      yield WeatherLoadingInProgress();
-
-      try {
-        final Weather weather = await weatherRepository.getWeather(event.city);
-        yield WeatherLoadSuccess(weather: weather);
-      } catch (_) {
-        yield WeatherLoadFailure();
-      }
+      yield* _mapWeatherRequestedToState(event);
+    } else if (event is WeatherRefreshRequested) {
+      yield* _mapWeatherRefreshRequestedToState(event);
     }
+  }
+
+  Stream<WeatherState> _mapWeatherRequestedToState(
+      WeatherRequested event) async* {
+    yield WeatherLoadingInProgress();
+
+    try {
+      final Weather weather = await weatherRepository.getWeather(event.city);
+      yield WeatherLoadSuccess(weather: weather);
+    } catch (_) {
+      yield WeatherLoadFailure();
+    }
+  }
+
+  Stream<WeatherState> _mapWeatherRefreshRequestedToState(
+      WeatherRefreshRequested event) async* {
+    try {
+      final Weather weather = await weatherRepository.getWeather(event.city);
+      yield WeatherLoadSuccess(weather: weather);
+    } catch (_) {}
   }
 }
