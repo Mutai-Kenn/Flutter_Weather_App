@@ -10,6 +10,7 @@ class WeatherApiClient {
 
   WeatherApiClient({
     @required this.httpClient,
+    // ignore: non_constant_identifier_names
     http.Client HttpClient,
   }) : assert(httpClient != null);
 

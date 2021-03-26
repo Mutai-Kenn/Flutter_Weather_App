@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weather/blocs/blocs.dart';
 import 'package:weather/blocs/themebloc.dart';
+import 'package:weather/blocs/unit_conversion.dart';
 import 'package:weather/repositories/repositories.dart';
 import 'package:weather/weather_bloc_obsever.dart';
 import 'package:http/http.dart' as http;
@@ -14,8 +15,15 @@ void main() {
     weatherApiClient:
         WeatherApiClient(HttpClient: http.Client(), httpClient: null),
   );
-  runApp(BlocProvider<ThemeBloc>(
-    create: (context) => ThemeBloc(),
+  runApp(MultiBlocProvider(
+    providers: [
+      BlocProvider<ThemeBloc>(
+        create: (context) => ThemeBloc(),
+      ),
+      BlocProvider<SettingsBloc>(
+        create: (context) => SettingsBloc(),
+      )
+    ],
     child: App(weatherRepository: weatherRepository),
   ));
 }
