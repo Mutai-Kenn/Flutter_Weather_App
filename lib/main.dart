@@ -12,8 +12,9 @@ void main() {
   Bloc.observer = WeatherBlocObserver();
 
   final WeatherRepository weatherRepository = WeatherRepository(
-    weatherApiClient:
-        WeatherApiClient(HttpClient: http.Client(), httpClient: null),
+    weatherApiClient: WeatherApiClient(
+      httpClient: http.Client(),
+    ),
   );
   runApp(MultiBlocProvider(
     providers: [
@@ -22,7 +23,7 @@ void main() {
       ),
       BlocProvider<SettingsBloc>(
         create: (context) => SettingsBloc(),
-      )
+      ),
     ],
     child: App(weatherRepository: weatherRepository),
   ));
