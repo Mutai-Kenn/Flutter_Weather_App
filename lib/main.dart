@@ -40,7 +40,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ThemeBloc, ThemeState>(builder: (context, themeState) {
       return MaterialApp(
-        title: 'Flutter Weather',
+        title: 'Weather App',
         home: BlocProvider(
           create: (context) =>
               WeatherBloc(weatherRepository: weatherRepository),
